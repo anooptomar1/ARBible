@@ -29,6 +29,10 @@ extension ViewController: ARSCNViewDelegate, ARSessionDelegate {
     
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
         guard let planeAnchor = anchor as? ARPlaneAnchor else { return }
+        
+        NSLog("Added plane: %f %f %f", planeAnchor.extent.x, planeAnchor.extent.y, planeAnchor.extent.z);
+        firstDetectedPlane = planeAnchor.extent
+        
         DispatchQueue.main.async {
             self.statusViewController.cancelScheduledMessage(for: .planeEstimation)
             self.statusViewController.showMessage("SURFACE DETECTED")

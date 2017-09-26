@@ -23,9 +23,18 @@ extension ViewController: VirtualObjectSelectionViewControllerDelegate {
             return
         }
         
+        guard let firstDetectedPlane = firstDetectedPlane else { return }
+        
         virtualObjectInteraction.selectedObject = virtualObject
         virtualObject.setPosition(focusSquarePosition, relativeTo: cameraTransform, smoothMovement: false)
-        virtualObject.scale = SCNVector3(0.02, 0.02, 0.02)
+        
+        let box = virtualObject.boundingBox
+        let xScale = firstDetectedPlane.x / (box.max.x - box.min.x)
+        let yScale = firstDetectedPlane.y / (box.max.y - box.min.y)
+        let zScale = firstDetectedPlane.z / (box.max.z - box.min.z)
+        NSLog("Scale: %f %f %f", xScale, yScale, zScale)
+        let scale = max(xScale, max(yScale, zScale))
+        virtualObject.scale = SCNVector3(scale, scale, scale)
         
         updateQueue.async {
             self.sceneView.scene.rootNode.addChildNode(virtualObject)

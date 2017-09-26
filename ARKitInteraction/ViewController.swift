@@ -24,6 +24,7 @@ class ViewController: UIViewController {
     // MARK: - UI Elements
     
     var focusSquare = FocusSquare()
+    var firstDetectedPlane: vector_float3? = nil
     
     /// The view controller that displays the status and "restart experience" UI.
     lazy var statusViewController: StatusViewController = {
