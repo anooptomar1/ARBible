@@ -46,10 +46,13 @@ class VirtualObjectInteraction: NSObject, UIGestureRecognizerDelegate {
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTap(_:)))
         
+        let pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(didPinch(_:)))
+        
         // Add gestures to the `sceneView`.
         sceneView.addGestureRecognizer(panGesture)
         sceneView.addGestureRecognizer(rotationGesture)
         sceneView.addGestureRecognizer(tapGesture)
+        sceneView.addGestureRecognizer(pinchGesture)
     }
     
     // MARK: - Gesture Actions
@@ -126,6 +129,28 @@ class VirtualObjectInteraction: NSObject, UIGestureRecognizerDelegate {
         } else if let object = selectedObject {
             // Teleport the object to whereever the user touched the screen.
             translate(object, basedOn: touchLocation, infinitePlane: false)
+        }
+    }
+    
+    @objc func didPinch(_ gesture: UIPinchGestureRecognizer)
+    {
+        guard gesture.state == .changed || gesture.state == .ended else { return }
+        
+        let touchLocation = gesture.location(in: sceneView)
+        if let pinchedObject = sceneView.virtualObject(at: touchLocation)
+        {
+            selectedObject = pinchedObject
+        }
+        
+        if let object = selectedObject
+        {
+            let newScale = Float(gesture.scale) * object.initialScale
+            object.scale = SCNVector3(newScale, newScale, newScale)
+            
+            if (gesture.state == .ended)
+            {
+                object.initialScale = newScale
+            }
         }
     }
     

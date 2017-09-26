@@ -23,6 +23,8 @@ class VirtualObject: SCNReferenceNode {
     func reset() {
         recentVirtualObjectDistances.removeAll()
     }
+    
+    var initialScale: Float = 1
 	
     /**
      Set the object's position based on the provided position relative to the `cameraTransform`.
