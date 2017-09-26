@@ -22,15 +22,7 @@ extension ViewController: UIGestureRecognizerDelegate {
         guard !addObjectButton.isHidden && !virtualObjectLoader.isLoading else { return }
         
         statusViewController.cancelScheduledMessage(for: .contentPlacement)
-        let object = VirtualObject.availableObjects.first!
-        virtualObjectLoader.loadVirtualObject(object, loadedHandler: { [unowned self] loadedObject in
-            DispatchQueue.main.async {
-                self.hideObjectLoadingUI()
-                self.placeVirtualObject(object)
-            }
-        })
-        
-        displayObjectLoadingUI()
+        performSegue(withIdentifier: SegueIdentifier.showObjects.rawValue, sender: addObjectButton)
     }
     
     /// Determines if the tap gesture for presenting the `VirtualObjectSelectionViewController` should be used.
