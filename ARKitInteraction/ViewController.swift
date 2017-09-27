@@ -62,6 +62,7 @@ class ViewController: UIViewController {
         
         sceneView.delegate = self
         sceneView.session.delegate = self
+        sceneView.showsStatistics = true
 
         // Set up scene content.
         setupCamera()
